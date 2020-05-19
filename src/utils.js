@@ -59,7 +59,14 @@ function createCytoscapeConfig(elements) {
 					'line-color': '#ccc'
 				}
 			}
-		]
+		],
+		layout: {
+			name: 'cose-bilkent',
+			quality: 'draft',
+			fit: true,
+			padding: 20,
+			idealEdgeLength: 150
+		}
 	};
 }
 

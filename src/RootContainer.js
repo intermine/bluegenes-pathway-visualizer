@@ -15,7 +15,16 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
-			{data.length ? <GenePathwayNetwork data={data} /> : <h1>Loading...</h1>}
+			<div className="innerContainer">
+				<div className="graph">
+					<span className="chart-title">Pathway Network</span>
+					{data.length ? (
+						<GenePathwayNetwork data={data} />
+					) : (
+						<h1>Loading...</h1>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

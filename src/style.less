@@ -13,10 +13,27 @@
 	.rootContainer {
 		border: 1px solid black;
     padding: 20px;
-    
-    .cyContainer {
-      position: relative !important;
-      height: 500px !important;
+
+    .innerContainer {
+      display: flex;
+
+      .graph {
+				width: calc(100vw - 15rem);
+
+				.chart-title {
+					font-weight: 300;
+					font-size: 24px;
+					font-family: sans-serif;
+					display: flex;
+					justify-content: center;
+					margin: 12px;
+				}
+					
+				.cyContainer {
+					position: relative !important;
+					height: 500px !important;
+				}
+      }
     }
 	}
 }
