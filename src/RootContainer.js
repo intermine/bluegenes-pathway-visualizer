@@ -7,6 +7,8 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
 	const [pathwayList, setPathwayList] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [selectedPathway, setSelectedPathway] = useState([]);
+	const [filteredList, setFilteredList] = useState([]);
 
 	useEffect(() => {
 		setLoading(true);
@@ -25,7 +27,20 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			[]
 		);
 		setPathwayList([...new Set(pathways)]);
+		setFilteredList([...new Set(pathways)]);
 	}, [data]);
+
+	const updateFilters = ev => {
+		setSelectedPathway([...selectedPathway, ev.target.value]);
+	};
+
+	const filterGraph = () => {
+		const filteredMap = data.map(item => ({
+			...item,
+			pathways: item.pathways.filter(g => selectedPathway.includes(g.name))
+		}));
+		setFilteredList(filteredMap);
+	};
 
 	return (
 		<div className="rootContainer">
@@ -35,11 +50,19 @@ const RootContainer = ({ serviceUrl, entity }) => {
 				<div className="innerContainer">
 					<div className="graph">
 						<span className="chart-title">Pathway Network</span>
-						<GenePathwayNetwork data={data} />
+						{filteredList.length ? (
+							<GenePathwayNetwork data={data} />
+						) : (
+							<h2>Data Not Found!</h2>
+						)}
 					</div>
 					{pathwayList.length ? (
 						<div className="controls">
-							<FilterPanel pathwayList={pathwayList} />
+							<FilterPanel
+								pathwayList={pathwayList}
+								updateFilters={updateFilters}
+								filterGraph={filterGraph}
+							/>
 						</div>
 					) : (
 						<></>
