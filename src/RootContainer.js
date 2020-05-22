@@ -17,6 +17,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			geneId: entity.value
 		}).then(data => {
 			setData(data);
+			setFilteredList(data);
 			setLoading(false);
 		});
 	}, []);
@@ -27,7 +28,6 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			[]
 		);
 		setPathwayList([...new Set(pathways)]);
-		setFilteredList([...new Set(pathways)]);
 	}, [data]);
 
 	const updateFilters = ev => {
@@ -51,7 +51,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 					<div className="graph">
 						<span className="chart-title">Pathway Network</span>
 						{filteredList.length ? (
-							<GenePathwayNetwork data={data} />
+							<GenePathwayNetwork data={filteredList} />
 						) : (
 							<h2>Data Not Found!</h2>
 						)}
