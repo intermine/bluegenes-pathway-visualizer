@@ -107,9 +107,8 @@ function createTooltipData(node) {
 		return `
 			<div>
 				<span>Symbol: </span><strong>${info.symbol}</strong><br/><div style="padding: 2px"></div>
-				<span>Name: </span><strong>${info.shortName}</strong><br/><div style="padding: 2px"></div>
-				<span>Primary Identifier: </span><strong>${info.name}</strong><br/><div style="padding: 2px"></div>
-				<span>Secondary Identifier: </span><strong>${info.primaryIdentifier}</strong>
+				<span>Name: </span><strong>${info.name}</strong><br/><div style="padding: 2px"></div>
+				<span>Primary Identifier: </span><strong>${info.primaryIdentifier}</strong>
 			</div>
 		`;
 	}
