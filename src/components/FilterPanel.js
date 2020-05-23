@@ -53,7 +53,7 @@ const FilterPanel = ({
 			<hr />
 			<div className="button-container">
 				<button type="button" className="filter-button" onClick={filterGraph}>
-					Filter
+					Filter ({selectedPathway.length})
 				</button>
 			</div>
 		</div>
