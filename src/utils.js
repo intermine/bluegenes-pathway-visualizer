@@ -1,3 +1,6 @@
+const geneColor = '#808080';
+const goTermColor = '#F4D03F';
+
 function getGraphData(data) {
 	const elements = [];
 	data.forEach(el => {
@@ -6,6 +9,7 @@ function getGraphData(data) {
 			group: 'nodes',
 			data: {
 				id: el.symbol,
+				bg: geneColor,
 				info: {
 					class: el.class,
 					symbol,
@@ -22,6 +26,7 @@ function getGraphData(data) {
 					group: 'nodes',
 					data: {
 						id: identifier,
+						bg: goTermColor,
 						info: {
 							class: pathway.class,
 							name
