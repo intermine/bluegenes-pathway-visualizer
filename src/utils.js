@@ -1,5 +1,7 @@
 const geneColor = '#808080';
-const goTermColor = '#F4D03F';
+const hoveredGeneColor = '#666666';
+const pathwayColor = '#F4D03F';
+const hoveredPathwayColor = '#EDBE05';
 
 function getGraphData(data) {
 	const elements = [];
@@ -26,7 +28,7 @@ function getGraphData(data) {
 					group: 'nodes',
 					data: {
 						id: identifier,
-						bg: goTermColor,
+						bg: pathwayColor,
 						info: {
 							class: pathway.class,
 							name
@@ -101,6 +103,7 @@ function createTooltipData(node) {
 	} = node.target[0]._private;
 
 	if (info.class === 'Gene') {
+		node.target.style('backgroundColor', hoveredGeneColor);
 		return `
 			<div>
 				<span>Symbol: </span><strong>${info.symbol}</strong><br/><div style="padding: 2px"></div>
@@ -111,6 +114,7 @@ function createTooltipData(node) {
 		`;
 	}
 	if (info.class === 'Pathway') {
+		node.target.style('backgroundColor', hoveredPathwayColor);
 		return `
 			<div>
 				<span>Symbol: </span><strong>${node.target[0]._private.data.id}</strong><br/><div style="padding: 4px"></div>
@@ -120,9 +124,19 @@ function createTooltipData(node) {
 	}
 }
 
+function changeNodeColor(node) {
+	const {
+		data: { info }
+	} = node.target[0]._private;
+	if (info.class === 'Gene') node.target.style('backgroundColor', geneColor);
+	if (info.class === 'Pathway')
+		node.target.style('backgroundColor', pathwayColor);
+}
+
 export {
 	getGraphData,
 	createCytoscapeConfig,
 	createTooltip,
-	createTooltipData
+	createTooltipData,
+	changeNodeColor
 };
