@@ -2,10 +2,10 @@ import React from 'react';
 
 const FilterPanel = ({
 	updateFilters,
-	pathwayList,
 	filterGraph,
 	selectedOption,
-	selectedPathway
+	selectedPathway,
+	checkedCount
 }) => {
 	const moreOptions = ['Select All', 'Deselect All'];
 	return (
@@ -13,23 +13,22 @@ const FilterPanel = ({
 			<h4 className="filter-panel-title">Available Pathways</h4>
 			<hr />
 			<div className="extra-options-container">
-				{pathwayList.length &&
-					moreOptions.map(term => (
-						<div className="extra-options" key={term}>
-							<input
-								type="radio"
-								id={term}
-								value={term}
-								onChange={updateFilters}
-								checked={term == selectedOption}
-							/>
-							<label htmlFor={term}>{term}</label>
-						</div>
-					))}
+				{moreOptions.map(term => (
+					<div className="extra-options" key={term}>
+						<input
+							type="radio"
+							id={term}
+							value={term}
+							onChange={updateFilters}
+							checked={term == selectedOption}
+						/>
+						<label htmlFor={term}>{term}</label>
+					</div>
+				))}
 			</div>
 			<div className="filter-panel">
 				<div className="filter-container">
-					{pathwayList.map(term => (
+					{Object.keys(selectedPathway).map(term => (
 						<>
 							<div className="option">
 								<div>
@@ -38,7 +37,7 @@ const FilterPanel = ({
 										id={term}
 										value={term}
 										onChange={updateFilters}
-										checked={selectedPathway.includes(term)}
+										checked={selectedPathway[term]}
 									/>
 								</div>
 								<div>
@@ -53,7 +52,7 @@ const FilterPanel = ({
 			<hr />
 			<div className="button-container">
 				<button type="button" className="filter-button" onClick={filterGraph}>
-					Filter ({selectedPathway.length})
+					Filter ({checkedCount})
 				</button>
 			</div>
 		</div>

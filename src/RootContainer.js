@@ -7,9 +7,10 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
 	const [pathwayList, setPathwayList] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [selectedPathway, setSelectedPathway] = useState([]);
+	const [selectedPathway, setSelectedPathway] = useState({});
 	const [filteredList, setFilteredList] = useState([]);
 	const [selectedOption, setSelected] = useState('Select All');
+	const [checkedCount, setCount] = useState(0);
 
 	useEffect(() => {
 		setLoading(true);
@@ -31,30 +32,48 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		setPathwayList([...new Set(pathways)]);
 	}, [data]);
 
+	const createMapFromPathway = (checkedValue = true) => {
+		let pathwayMap = {};
+		pathwayList.forEach(
+			p => (pathwayMap = { ...pathwayMap, [p]: checkedValue })
+		);
+		setSelectedPathway(pathwayMap);
+	};
+
 	useEffect(() => {
-		setSelectedPathway(pathwayList);
+		createMapFromPathway(true);
 	}, [pathwayList]);
 
+	useEffect(() => {
+		const count = Object.keys(selectedPathway).reduce(
+			(a, b) => (selectedPathway[b] ? a + 1 : a),
+			0
+		);
+		setCount(count);
+		if (count == pathwayList.length) setSelected('Select All');
+		else if (!count) setSelected('Deselect All');
+		else setSelected('');
+	}, [selectedPathway]);
+
 	const updateFilters = ev => {
-		const { value } = ev.target;
+		const { value, checked } = ev.target;
 		if (value == 'Select All' || value == 'Deselect All') {
 			setSelected(value);
-			const arr = value == 'Select All' ? pathwayList : [];
-			setSelectedPathway(arr);
+			value == 'Select All'
+				? createMapFromPathway(true)
+				: createMapFromPathway(false);
 			return;
 		}
-		if (selectedOption) setSelected('');
-		const index = selectedPathway.indexOf(value);
-		if (index > -1) {
-			selectedPathway.splice(index, 1);
-			setSelectedPathway([...selectedPathway]);
-		} else setSelectedPathway([...selectedPathway, ev.target.value]);
+		setSelectedPathway({
+			...selectedPathway,
+			[value]: checked
+		});
 	};
 
 	const filterGraph = () => {
 		const filteredMap = data.map(item => ({
 			...item,
-			pathways: item.pathways.filter(g => selectedPathway.includes(g.name))
+			pathways: item.pathways.filter(g => selectedPathway[g.name] != false)
 		}));
 		setFilteredList(filteredMap);
 	};
@@ -76,11 +95,11 @@ const RootContainer = ({ serviceUrl, entity }) => {
 					{pathwayList.length ? (
 						<div className="controls">
 							<FilterPanel
-								pathwayList={pathwayList}
 								updateFilters={updateFilters}
 								filterGraph={filterGraph}
 								selectedOption={selectedOption}
 								selectedPathway={selectedPathway}
+								checkedCount={checkedCount}
 							/>
 						</div>
 					) : (
