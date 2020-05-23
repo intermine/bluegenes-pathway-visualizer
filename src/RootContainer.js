@@ -9,6 +9,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [loading, setLoading] = useState(true);
 	const [selectedPathway, setSelectedPathway] = useState([]);
 	const [filteredList, setFilteredList] = useState([]);
+	const [selectedOption, setSelected] = useState('Select All');
 
 	useEffect(() => {
 		setLoading(true);
@@ -30,8 +31,24 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		setPathwayList([...new Set(pathways)]);
 	}, [data]);
 
+	useEffect(() => {
+		setSelectedPathway(pathwayList);
+	}, [pathwayList]);
+
 	const updateFilters = ev => {
-		setSelectedPathway([...selectedPathway, ev.target.value]);
+		const { value } = ev.target;
+		if (value == 'Select All' || value == 'Deselect All') {
+			setSelected(value);
+			const arr = value == 'Select All' ? pathwayList : [];
+			setSelectedPathway(arr);
+			return;
+		}
+		if (selectedOption) setSelected('');
+		const index = selectedPathway.indexOf(value);
+		if (index > -1) {
+			selectedPathway.splice(index, 1);
+			setSelectedPathway([...selectedPathway]);
+		} else setSelectedPathway([...selectedPathway, ev.target.value]);
 	};
 
 	const filterGraph = () => {
@@ -62,6 +79,8 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								pathwayList={pathwayList}
 								updateFilters={updateFilters}
 								filterGraph={filterGraph}
+								selectedOption={selectedOption}
+								selectedPathway={selectedPathway}
 							/>
 						</div>
 					) : (

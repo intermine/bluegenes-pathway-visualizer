@@ -53,6 +53,26 @@
             margin-bottom: 10px;
             font-weight: 300;
           }
+
+          .extra-options-container {
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            input {
+              margin-right: 10px;
+              font-size: 15px;
+              cursor: pointer;
+            }
+            label {
+              font-weight: 300;
+              margin: 6px 0;
+              font-size: 14px;
+              font-family: arial;
+              color: black;
+              text-align: center;
+              cursor: pointer;
+            }
+          }
         
           .filter-panel {
             overflow-y: scroll;
@@ -82,10 +102,15 @@
               }
             }
           }
-          .filter-button {
-            width: 100%;
-            color: black;
-            font-size: 15px;
+          .button-container {
+            text-align: center;
+            .filter-button {
+              padding: 5px;
+              width: 80%;
+              color: white;
+              font-size: 15px;
+              background: rgb(72, 116, 235);
+            }
           }
         }
       }
