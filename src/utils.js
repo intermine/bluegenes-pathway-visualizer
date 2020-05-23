@@ -57,7 +57,8 @@ function createCytoscapeConfig(elements) {
 				selector: 'node',
 				style: {
 					label: 'data(id)',
-					'background-color': 'data(bg)'
+					'background-color': 'data(bg)',
+					'font-size': 12
 				}
 			},
 			{
