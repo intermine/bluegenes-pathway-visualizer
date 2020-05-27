@@ -33,7 +33,7 @@
       display: flex;
 
       .graph {
-				width: calc(100vw - 15rem);
+				width: calc(100vw - 18rem);
 
 				.chart-title {
 					font-weight: 300;
@@ -51,7 +51,7 @@
       }
 
       .controls {
-        width: 15rem;
+        width: 18rem !important;
   
         .filter-panel-root {
           padding: 10px 0px;
@@ -70,23 +70,28 @@
           }
 
           .extra-options-container {
-            padding: 8px;
-            // margin: 8px;
+            padding: 5px;
             display: flex;
-            justify-content: space-between;
-            input {
-              margin-right: 10px;
-              font-size: 15px;
+            justify-content: center;
+            .extra-options {
               cursor: pointer;
-            }
-            label {
-              font-weight: 300;
-              margin: 6px 0;
+              margin-right: 10px;
+              padding: 5px;
               font-size: 14px;
               font-family: arial;
-              color: black;
-              text-align: center;
-              cursor: pointer;
+              input {
+                display: none;
+              }
+              label {
+                cursor: pointer;
+              }
+            }
+            .selected {
+              color: white;
+              background: rgb(72, 116, 235);
+            }
+            .not-selected {
+              background: rgba(72, 116, 235, 0.2);
             }
           }
         
@@ -96,7 +101,6 @@
             padding: 8px;
 
             .filter-container {
-              padding: 8px;
               .option {
                 display: flex;
               }

@@ -14,13 +14,19 @@ const FilterPanel = ({
 			<hr />
 			<div className="extra-options-container">
 				{moreOptions.map(term => (
-					<div className="extra-options" key={term}>
+					<div
+						className={
+							term == selectedOption
+								? 'extra-options selected'
+								: 'extra-options not-selected'
+						}
+						key={term}
+					>
 						<input
 							type="radio"
 							id={term}
 							value={term}
 							onChange={updateFilters}
-							checked={term == selectedOption}
 						/>
 						<label htmlFor={term}>{term}</label>
 					</div>
