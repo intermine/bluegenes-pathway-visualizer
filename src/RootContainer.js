@@ -13,23 +13,15 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	useEffect(() => {
 		setLoading(true);
-		// let data = localStorage.getItem('result');
-		// if (data) {
-		// 	data = JSON.parse(data);
-		// 	setData(data);
-		// 	setFilteredList(data);
-		// 	setLoading(false);
-		// } else {
+		let { value } = entity;
 		queryData({
 			serviceUrl: serviceUrl,
-			geneId: entity.value
+			geneId: !Array.isArray(value) ? [value] : value
 		}).then(data => {
-			// localStorage.setItem('result', JSON.stringify(data));
 			setData(data);
 			setFilteredList(data);
 			setLoading(false);
 		});
-		// }
 	}, []);
 
 	useEffect(() => {
