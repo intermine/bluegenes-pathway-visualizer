@@ -1,8 +1,10 @@
+import colors from './constant';
+
 function getGraphData(data) {
 	const elements = [];
+	const colorArrLen = colors.length;
 	for (var i = 0; i < data.length; i++) {
-		let color = getRandomRgb();
-		data[i].color = 'rgb(' + color + ')';
+		data[i].color = colors[i % colorArrLen];
 	}
 	data.forEach(el => {
 		const { symbol, name, primaryIdentifier, organism, color } = el;
@@ -11,7 +13,6 @@ function getGraphData(data) {
 			data: {
 				id: el.symbol,
 				bg: color,
-				// op: 1,
 				info: {
 					class: el.class,
 					symbol,
@@ -29,7 +30,6 @@ function getGraphData(data) {
 					data: {
 						id: identifier,
 						bg: color,
-						// op: 0.6,
 						info: {
 							class: pathway.class,
 							name
@@ -66,18 +66,10 @@ function makePie(elements) {
 			for (let i = 1; i <= colorLen; i++) {
 				style[`pie-${i}-background-color`] = idToColorsMap[id][i - 1];
 				style[`pie-${i}-background-size`] = 100 / colorLen;
-				// style[`pie-${i}-background-opacity`] = 0.5;
 			}
 			pieNodeStyle['style'] = style;
 			return pieNodeStyle;
 		});
-}
-
-function getRandomRgb() {
-	const r = Math.floor(Math.random() * 256);
-	const b = Math.floor(Math.random() * 256);
-	const g = Math.floor(Math.random() * 256);
-	return r + ',' + g + ',' + b;
 }
 
 function createCytoscapeConfig(elements) {
@@ -93,7 +85,6 @@ function createCytoscapeConfig(elements) {
 					label: 'data(id)',
 					'background-color': 'data(bg)',
 					'font-size': 13
-					// 'background-opacity': 'data(op)'
 				}
 			},
 			{
@@ -109,7 +100,6 @@ function createCytoscapeConfig(elements) {
 			fit: true,
 			padding: 20,
 			idealEdgeLength: 150
-			// opacity: 0.2
 		}
 	};
 }
