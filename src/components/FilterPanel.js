@@ -3,33 +3,40 @@ import React from 'react';
 const FilterPanel = ({
 	updateFilters,
 	filterGraph,
-	selectedOption,
 	selectedPathway,
-	checkedCount
+	checkedCount,
+	selectAll,
+	deselectAll
 }) => {
-	const moreOptions = ['Select All', 'Deselect All'];
+	const moreOptions = [
+		{
+			option: 'Select All',
+			requiredCount: Object.keys(selectedPathway).length,
+			fn: selectAll
+		},
+		{
+			option: 'Deselect All',
+			requiredCount: 0,
+			fn: deselectAll
+		}
+	];
 	return (
 		<div className="filter-panel-root">
 			<h4 className="filter-panel-title">Available Pathways</h4>
 			<hr />
 			<div className="extra-options-container">
 				{moreOptions.map(term => (
-					<div
+					<button
 						className={
-							term == selectedOption
+							checkedCount === term.requiredCount
 								? 'extra-options selected'
 								: 'extra-options not-selected'
 						}
-						key={term}
+						key={term.option}
+						onClick={term.fn}
 					>
-						<input
-							type="radio"
-							id={term}
-							value={term}
-							onChange={updateFilters}
-						/>
-						<label htmlFor={term}>{term}</label>
-					</div>
+						{term.option}
+					</button>
 				))}
 			</div>
 			<div className="filter-panel">
