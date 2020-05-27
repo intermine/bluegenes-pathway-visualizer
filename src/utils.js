@@ -1,17 +1,17 @@
-const geneColor = '#808080';
-const hoveredGeneColor = '#666666';
-const pathwayColor = '#F4D03F';
-const hoveredPathwayColor = '#EDBE05';
-
 function getGraphData(data) {
 	const elements = [];
+	for (var i = 0; i < data.length; i++) {
+		let color = getRandomRgb();
+		data[i].color = 'rgb(' + color + ')';
+	}
 	data.forEach(el => {
-		const { symbol, name, primaryIdentifier, organism } = el;
+		const { symbol, name, primaryIdentifier, organism, color } = el;
 		elements.push({
 			group: 'nodes',
 			data: {
 				id: el.symbol,
-				bg: geneColor,
+				bg: color,
+				// op: 1,
 				info: {
 					class: el.class,
 					symbol,
@@ -28,7 +28,8 @@ function getGraphData(data) {
 					group: 'nodes',
 					data: {
 						id: identifier,
-						bg: pathwayColor,
+						bg: color,
+						// op: 0.6,
 						info: {
 							class: pathway.class,
 							name
@@ -47,18 +48,52 @@ function getGraphData(data) {
 	return elements;
 }
 
+function makePie(elements) {
+	const idToColorsMap = elements.reduce((m, elem) => {
+		if (elem.data && elem.data.id) {
+			if (!m[elem.data.id]) m[elem.data.id] = [];
+			m[elem.data.id].push(elem.data.bg);
+		}
+		return m;
+	}, {});
+	return Object.keys(idToColorsMap)
+		.filter(key => idToColorsMap[key].length > 1)
+		.map(id => {
+			const pieNodeStyle = {};
+			pieNodeStyle['selector'] = `node[id = '${id}']`;
+			const style = {};
+			const colorLen = idToColorsMap[id].length;
+			for (let i = 1; i <= colorLen; i++) {
+				style[`pie-${i}-background-color`] = idToColorsMap[id][i - 1];
+				style[`pie-${i}-background-size`] = 100 / colorLen;
+				// style[`pie-${i}-background-opacity`] = 0.5;
+			}
+			pieNodeStyle['style'] = style;
+			return pieNodeStyle;
+		});
+}
+
+function getRandomRgb() {
+	const r = Math.floor(Math.random() * 256);
+	const b = Math.floor(Math.random() * 256);
+	const g = Math.floor(Math.random() * 256);
+	return r + ',' + g + ',' + b;
+}
+
 function createCytoscapeConfig(elements) {
 	return {
 		container: document.getElementById('cy'),
 		elements: elements,
 		grabbable: true,
 		style: [
+			...makePie(elements),
 			{
 				selector: 'node',
 				style: {
 					label: 'data(id)',
 					'background-color': 'data(bg)',
-					'font-size': 12
+					'font-size': 13
+					// 'background-opacity': 'data(op)'
 				}
 			},
 			{
@@ -74,6 +109,7 @@ function createCytoscapeConfig(elements) {
 			fit: true,
 			padding: 20,
 			idealEdgeLength: 150
+			// opacity: 0.2
 		}
 	};
 }
@@ -104,7 +140,6 @@ function createTooltipData(node) {
 	} = node.target[0]._private;
 
 	if (info.class === 'Gene') {
-		node.target.style('backgroundColor', hoveredGeneColor);
 		return `
 			<div>
 				<span>Symbol: </span><strong>${info.symbol}</strong><br/><div style="padding: 2px"></div>
@@ -114,7 +149,6 @@ function createTooltipData(node) {
 		`;
 	}
 	if (info.class === 'Pathway') {
-		node.target.style('backgroundColor', hoveredPathwayColor);
 		return `
 			<div>
 				<span>Symbol: </span><strong>${node.target[0]._private.data.id}</strong><br/><div style="padding: 4px"></div>
@@ -124,19 +158,9 @@ function createTooltipData(node) {
 	}
 }
 
-function changeNodeColor(node) {
-	const {
-		data: { info }
-	} = node.target[0]._private;
-	if (info.class === 'Gene') node.target.style('backgroundColor', geneColor);
-	if (info.class === 'Pathway')
-		node.target.style('backgroundColor', pathwayColor);
-}
-
 export {
 	getGraphData,
 	createCytoscapeConfig,
 	createTooltip,
-	createTooltipData,
-	changeNodeColor
+	createTooltipData
 };

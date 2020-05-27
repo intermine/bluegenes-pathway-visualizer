@@ -5,8 +5,7 @@ import {
 	getGraphData,
 	createCytoscapeConfig,
 	createTooltip,
-	createTooltipData,
-	changeNodeColor
+	createTooltipData
 } from '../utils';
 
 cytoscape.use(coseBilkent);
@@ -22,10 +21,9 @@ function GenePathwayNetwork({ data }) {
 			div = createTooltip(event.renderedPosition, createTooltipData(event));
 		});
 		node.unbind('mouseout');
-		node.bind('mouseout', event => {
+		node.bind('mouseout', () => {
 			document.body.style.cursor = 'default';
 			div.style.display = 'none';
-			changeNodeColor(event);
 		});
 	}, [data]);
 
