@@ -9,19 +9,27 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [loading, setLoading] = useState(true);
 	const [selectedPathway, setSelectedPathway] = useState({});
 	const [filteredList, setFilteredList] = useState([]);
-	const [selectedOption, setSelected] = useState('Select All');
 	const [checkedCount, setCount] = useState(0);
 
 	useEffect(() => {
 		setLoading(true);
+		// let data = localStorage.getItem('result');
+		// if (data) {
+		// 	data = JSON.parse(data);
+		// 	setData(data);
+		// 	setFilteredList(data);
+		// 	setLoading(false);
+		// } else {
 		queryData({
 			serviceUrl: serviceUrl,
 			geneId: entity.value
 		}).then(data => {
+			// localStorage.setItem('result', JSON.stringify(data));
 			setData(data);
 			setFilteredList(data);
 			setLoading(false);
 		});
+		// }
 	}, []);
 
 	useEffect(() => {
@@ -32,7 +40,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		setPathwayList([...new Set(pathways)]);
 	}, [data]);
 
-	const createMapFromPathway = (checkedValue = true) => {
+	const initMapFromPathway = (checkedValue = true) => {
 		let pathwayMap = {};
 		pathwayList.forEach(
 			p => (pathwayMap = { ...pathwayMap, [p]: checkedValue })
@@ -41,33 +49,18 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	};
 
 	useEffect(() => {
-		createMapFromPathway(true);
+		setCount(pathwayList.length);
+		initMapFromPathway(true);
 	}, [pathwayList]);
-
-	useEffect(() => {
-		const count = Object.keys(selectedPathway).reduce(
-			(a, b) => (selectedPathway[b] ? a + 1 : a),
-			0
-		);
-		setCount(count);
-		if (count == pathwayList.length) setSelected('Select All');
-		else if (!count) setSelected('Deselect All');
-		else setSelected('');
-	}, [selectedPathway]);
 
 	const updateFilters = ev => {
 		const { value, checked } = ev.target;
-		if (value == 'Select All' || value == 'Deselect All') {
-			setSelected(value);
-			value == 'Select All'
-				? createMapFromPathway(true)
-				: createMapFromPathway(false);
-			return;
-		}
+
 		setSelectedPathway({
 			...selectedPathway,
 			[value]: checked
 		});
+		setCount(count => (checked ? count + 1 : count - 1));
 	};
 
 	const filterGraph = () => {
@@ -76,6 +69,16 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			pathways: item.pathways.filter(g => selectedPathway[g.name] != false)
 		}));
 		setFilteredList(filteredMap);
+	};
+
+	const selectAll = () => {
+		initMapFromPathway(true);
+		setCount(pathwayList.length);
+	};
+
+	const deselectAll = () => {
+		initMapFromPathway(false);
+		setCount(0);
 	};
 
 	return (
@@ -97,9 +100,10 @@ const RootContainer = ({ serviceUrl, entity }) => {
 							<FilterPanel
 								updateFilters={updateFilters}
 								filterGraph={filterGraph}
-								selectedOption={selectedOption}
 								selectedPathway={selectedPathway}
 								checkedCount={checkedCount}
+								selectAll={selectAll}
+								deselectAll={deselectAll}
 							/>
 						</div>
 					) : (
