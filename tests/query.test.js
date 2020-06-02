@@ -20,4 +20,13 @@ describe('query', () => {
 			expect(res[0].pathways.length).toBeGreaterThanOrEqual(0);
 		});
 	});
+
+	test('should return a rejected promise when data not available', () => {
+		const promise = queryData({
+			geneId: 'SOME-FAKE-LIST-NAME',
+			serviceUrl: mockData.service,
+			imjsClient: imjs
+		});
+		return promise.catch(res => expect(res).toBe('No data found!'));
+	});
 });
