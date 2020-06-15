@@ -1,8 +1,6 @@
 {
   "accepts": ["id", "ids"],
-  "classes":
-    ["Gene"]
-  ,
+  "classes": ["Gene"],
   "columnMapping": {
     "Gene": {
       "id": "primaryIdentifier"
@@ -18,5 +16,6 @@
   "toolName" : {
     "human" :"Bluegenes Pathway Visualizer",
     "cljs" :"bluegenesPathwayVisualizer"    
-  }
+  },
+  "version": 2
 }
