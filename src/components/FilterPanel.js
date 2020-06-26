@@ -22,8 +22,18 @@ const FilterPanel = ({
 	];
 	return (
 		<div className="filter-panel-root">
-			<h4 className="filter-panel-title">Available Pathways</h4>
+			<h4 className="filter-panel-title">Filter Panel</h4>
 			<hr />
+			<div className="node-filter">
+				<div>Shared Nodes:</div>
+				<div>
+					<label className="switch">
+						<input type="checkbox" />
+						<span className="slider round"></span>
+					</label>
+				</div>
+			</div>
+			<div className="pathway-filter">Available Pathways:</div>
 			<div className="extra-options-container">
 				{moreOptions.map(term => (
 					<button
