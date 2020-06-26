@@ -13,6 +13,7 @@ function getGraphData(data) {
 			data: {
 				id: el.symbol,
 				bg: color,
+				label: el.symbol,
 				shape: 'barrel',
 				info: {
 					class: el.class,
@@ -31,6 +32,7 @@ function getGraphData(data) {
 					data: {
 						id: identifier,
 						bg: color,
+						label: '',
 						shape: 'ellipse',
 						info: {
 							class: pathway.class,
@@ -85,7 +87,7 @@ function createCytoscapeConfig(elements) {
 				selector: 'node',
 				style: {
 					shape: 'data(shape)',
-					label: 'data(id)',
+					label: 'data(label)',
 					'background-color': 'data(bg)',
 					'font-size': 13
 				}
