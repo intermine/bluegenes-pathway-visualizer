@@ -10,6 +10,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [selectedPathway, setSelectedPathway] = useState({});
 	const [filteredList, setFilteredList] = useState([]);
 	const [checkedCount, setCount] = useState(0);
+	const [toggleStatus, setToggleStatus] = useState(true);
 	const [sharedPathwayList, setSharedPathwayList] = useState([]);
 
 	useEffect(() => {
@@ -119,7 +120,9 @@ const RootContainer = ({ serviceUrl, entity }) => {
 					<div className="graph">
 						<span className="chart-title">Pathway Network</span>
 						{filteredList.length ? (
-							<GenePathwayNetwork data={filteredList} />
+							<GenePathwayNetwork
+								data={toggleStatus ? sharedPathwayList : filteredList}
+							/>
 						) : (
 							<h2>Data Not Found!</h2>
 						)}
@@ -133,6 +136,8 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								checkedCount={checkedCount}
 								selectAll={selectAll}
 								deselectAll={deselectAll}
+								updateToggle={() => setToggleStatus(!toggleStatus)}
+								toggleStatus={toggleStatus}
 							/>
 						</div>
 					) : (

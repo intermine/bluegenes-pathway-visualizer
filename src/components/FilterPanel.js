@@ -6,7 +6,9 @@ const FilterPanel = ({
 	selectedPathway,
 	checkedCount,
 	selectAll,
-	deselectAll
+	deselectAll,
+	updateToggle,
+	toggleStatus
 }) => {
 	const moreOptions = [
 		{
@@ -28,7 +30,12 @@ const FilterPanel = ({
 				<div>Shared Nodes:</div>
 				<div>
 					<label className="switch">
-						<input type="checkbox" />
+						<input
+							type="checkbox"
+							value={toggleStatus}
+							onChange={updateToggle}
+							checked={toggleStatus}
+						/>
 						<span className="slider round"></span>
 					</label>
 				</div>
