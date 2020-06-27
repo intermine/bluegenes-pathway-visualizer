@@ -10,6 +10,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const [selectedPathway, setSelectedPathway] = useState({});
 	const [filteredList, setFilteredList] = useState([]);
 	const [checkedCount, setCount] = useState(0);
+	const [sharedPathwayList, setSharedPathwayList] = useState([]);
 
 	useEffect(() => {
 		setLoading(true);
@@ -44,6 +45,42 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		setCount(pathwayList.length);
 		initMapFromPathway(true);
 	}, [pathwayList]);
+
+	useEffect(() => {
+		const counts = new Map();
+		filteredList.forEach(geneData => {
+			geneData &&
+				geneData.pathways &&
+				geneData.pathways.filter(item => {
+					let count = counts.get(item.identifier);
+					if (typeof count !== 'undefined') {
+						var freq = count[0];
+						var gene = count[1];
+					}
+					counts.set(
+						item.identifier,
+						count ? [freq + 1, [...gene, geneData]] : [1, [geneData]]
+					);
+					return count === 1;
+				});
+		});
+		const map = {};
+		for (const [key, value] of counts.entries()) {
+			const freq = value[0],
+				geneArr = value[1];
+			if (freq > 1) {
+				const filteredMap = geneArr.map(item => ({
+					...item,
+					pathways: item.pathways.filter(g => g.identifier === key)
+				}));
+				filteredMap.forEach(item => {
+					if (!map[item.symbol]) map[item.symbol] = item;
+					else map[item.symbol].pathways.push(...item.pathways);
+				});
+			}
+		}
+		setSharedPathwayList([...Object.values(map)]);
+	}, [filteredList]);
 
 	const updateFilters = ev => {
 		const { value, checked } = ev.target;
