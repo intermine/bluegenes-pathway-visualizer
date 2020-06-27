@@ -18,6 +18,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		let { value } = entity;
 		queryData({
 			serviceUrl: serviceUrl,
+			// supporting single entity also by converting value into array and passing it to get queried
 			geneId: !Array.isArray(value) ? [value] : value
 		}).then(data => {
 			setData(data);
@@ -27,6 +28,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	}, []);
 
 	useEffect(() => {
+		// extracting unique pathways from the query response to show it for filtering
 		const pathways = data.reduce(
 			(acc, d) => acc.concat(d.pathways.map(p => p.name)),
 			[]
@@ -35,6 +37,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	}, [data]);
 
 	const initMapFromPathway = (checkedValue = true) => {
+		// created a map to store the state of all pathway options as checked or unchecked
 		let pathwayMap = {};
 		pathwayList.forEach(
 			p => (pathwayMap = { ...pathwayMap, [p]: checkedValue })
@@ -44,10 +47,13 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	useEffect(() => {
 		setCount(pathwayList.length);
+		// initially all pathways are checked in the filter panel
 		initMapFromPathway(true);
 	}, [pathwayList]);
 
 	useEffect(() => {
+		// created a map to store the count of nodes with multiple parents
+		// key: node identifier, Value: [freq, [parents array]]
 		const counts = new Map();
 		filteredList.forEach(geneData => {
 			geneData &&
@@ -66,6 +72,8 @@ const RootContainer = ({ serviceUrl, entity }) => {
 				});
 		});
 		const map = {};
+		// Traversing map and if count is greater then 1 i.e. shared node
+		// then filtering it out and storing according it to its gene parent pathways list
 		for (const [key, value] of counts.entries()) {
 			const freq = value[0],
 				geneArr = value[1];
@@ -85,7 +93,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	const updateFilters = ev => {
 		const { value, checked } = ev.target;
-
+		// simply toggle the state of pathway in its map
 		setSelectedPathway({
 			...selectedPathway,
 			[value]: checked
