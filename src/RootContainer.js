@@ -58,7 +58,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		filteredList.forEach(geneData => {
 			geneData &&
 				geneData.pathways &&
-				geneData.pathways.filter(item => {
+				geneData.pathways.forEach(item => {
 					let count = counts.get(item.identifier);
 					if (typeof count !== 'undefined') {
 						var freq = count[0];
@@ -68,7 +68,6 @@ const RootContainer = ({ serviceUrl, entity }) => {
 						item.identifier,
 						count ? [freq + 1, [...gene, geneData]] : [1, [geneData]]
 					);
-					return count === 1;
 				});
 		});
 		const map = {};
@@ -80,7 +79,10 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			if (freq > 1) {
 				const filteredMap = geneArr.map(item => ({
 					...item,
-					pathways: item.pathways.filter(g => g.identifier === key)
+					pathways:
+						item &&
+						item.pathways &&
+						item.pathways.filter(g => g.identifier === key)
 				}));
 				filteredMap.forEach(item => {
 					if (!map[item.symbol]) map[item.symbol] = item;
@@ -104,7 +106,10 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const filterGraph = () => {
 		const filteredMap = data.map(item => ({
 			...item,
-			pathways: item.pathways.filter(g => selectedPathway[g.name] != false)
+			pathways:
+				item &&
+				item.pathways &&
+				item.pathways.filter(g => selectedPathway[g.name] != false)
 		}));
 		setFilteredList(filteredMap);
 	};
