@@ -3,7 +3,7 @@ import { queryData } from '../src/query';
 
 describe('query', () => {
 	const mockData = {
-		entity: [5268, 128],
+		entity: [1215734, 1161508],
 		service: 'https://www.humanmine.org/humanmine'
 	};
 
