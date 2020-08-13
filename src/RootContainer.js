@@ -128,12 +128,12 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
+			<span className="chart-title">Pathway Network</span>
 			{loading ? (
 				<h1>Loading...</h1>
 			) : (
 				<div className="innerContainer">
 					<div className="graph">
-						<span className="chart-title">Pathway Network</span>
 						{filteredList.length ? (
 							<GenePathwayNetwork
 								data={toggleStatus ? sharedPathwayList : filteredList}
