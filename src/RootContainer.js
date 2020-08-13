@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { queryData } from './query';
 import GenePathwayNetwork from './components/GenePathwayNetwork';
 import FilterPanel from './components/FilterPanel';
+import Loading from './components/Loading';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
@@ -128,12 +129,12 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
+			<span className="chart-title">Pathway Network</span>
 			{loading ? (
-				<h1>Loading...</h1>
+				<Loading />
 			) : (
 				<div className="innerContainer">
 					<div className="graph">
-						<span className="chart-title">Pathway Network</span>
 						{filteredList.length ? (
 							<GenePathwayNetwork
 								data={toggleStatus ? sharedPathwayList : filteredList}
