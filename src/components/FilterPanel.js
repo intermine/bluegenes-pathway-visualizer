@@ -24,8 +24,6 @@ const FilterPanel = ({
 	];
 	return (
 		<div className="filter-panel-root">
-			<h4 className="filter-panel-title">Filter Panel</h4>
-			<hr />
 			<div className="node-filter">
 				<div>Shared Nodes:</div>
 				<div>
@@ -59,7 +57,7 @@ const FilterPanel = ({
 			<div className="filter-panel">
 				<div className="filter-container">
 					{Object.keys(selectedPathway).map(term => (
-						<>
+						<React.Fragment key={term}>
 							<div className="option">
 								<div>
 									<input
@@ -75,7 +73,7 @@ const FilterPanel = ({
 								</div>
 							</div>
 							<div className="nextLine"></div>
-						</>
+						</React.Fragment>
 					))}
 				</div>
 			</div>

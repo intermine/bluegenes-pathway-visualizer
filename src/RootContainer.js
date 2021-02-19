@@ -129,37 +129,30 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
-			<span className="chart-title">Pathway Network</span>
 			{loading ? (
 				<Loading />
-			) : (
+			) : pathwayList.length ? (
 				<div className="innerContainer">
 					<div className="graph">
-						{filteredList.length ? (
-							<GenePathwayNetwork
-								data={toggleStatus ? sharedPathwayList : filteredList}
-							/>
-						) : (
-							<h2>Data Not Found!</h2>
-						)}
+						<GenePathwayNetwork
+							data={toggleStatus ? sharedPathwayList : filteredList}
+						/>
 					</div>
-					{pathwayList.length ? (
-						<div className="controls">
-							<FilterPanel
-								updateFilters={updateFilters}
-								filterGraph={filterGraph}
-								selectedPathway={selectedPathway}
-								checkedCount={checkedCount}
-								selectAll={selectAll}
-								deselectAll={deselectAll}
-								updateToggle={() => setToggleStatus(!toggleStatus)}
-								toggleStatus={toggleStatus}
-							/>
-						</div>
-					) : (
-						<></>
-					)}
+					<div className="controls">
+						<FilterPanel
+							updateFilters={updateFilters}
+							filterGraph={filterGraph}
+							selectedPathway={selectedPathway}
+							checkedCount={checkedCount}
+							selectAll={selectAll}
+							deselectAll={deselectAll}
+							updateToggle={() => setToggleStatus(!toggleStatus)}
+							toggleStatus={toggleStatus}
+						/>
+					</div>
 				</div>
+			) : (
+				<h4 className="no-data">No data found</h4>
 			)}
 		</div>
 	);

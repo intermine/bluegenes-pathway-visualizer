@@ -1,5 +1,5 @@
 {
-  "accepts": ["id", "ids"],
+  "accepts": ["ids"],
   "classes": ["Gene"],
   "columnMapping": {
     "Gene": {
@@ -14,7 +14,7 @@
     "js" : "dist/bundle.js"
   },
   "toolName" : {
-    "human" :"Bluegenes Pathway Visualizer",
+    "human" :"Gene Pathway Visualizer",
     "cljs" :"bluegenesPathwayVisualizer"    
   },
   "version": 2
