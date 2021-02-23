@@ -108,7 +108,13 @@ function createCytoscapeConfig(elements, cytoscapeElement) {
 			fit: true,
 			padding: 20,
 			idealEdgeLength: 150
-		}
+		},
+		// When scrolling through the visualizations on BlueGenes, cytoscape will
+		// suddenly grab your scroll event and zoom the graph into a wormhole (each
+		// scroll tick is massive, so the graph basically disappears). This wasn't an
+		// easy decision as zooming is still a useful feature to have; hopefully we'll
+		// add it again in the future by using a toolbar plugin.
+		userZoomingEnabled: false
 	};
 }
 
