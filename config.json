@@ -13,6 +13,7 @@
     "css" : "dist/style.css",
     "js" : "dist/bundle.js"
   },
+  "threshold": 100,
   "toolName" : {
     "human" :"Gene Pathway Visualizer",
     "cljs" :"bluegenesPathwayVisualizer"    
