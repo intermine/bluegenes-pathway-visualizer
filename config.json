@@ -9,6 +9,7 @@
       "id": "primaryAccession"
     }
   },
+  "description" : "Square nodes represent genes from your list.  Circular nodes represent pathway annotations for the genes in your list.  Edges connect genes and pathways.  By default only relationships where a gene is connected to more than one pathway are shown.  To show all Gene-Pathway relationships for the genes in your list, toggle the “Shared nodes” slider.  Pathway nodes are coloured according to the shared set of genes.  To show gene-pathway relationships for specific pathways, select one or more pathways from the menu and press the “Filter” button.",
   "files" : {
     "css" : "dist/style.css",
     "js" : "dist/bundle.js"
